@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
+import { Route } from 'react-router-dom';
 import Posts from './Posts';
+import PostsDetail from './PostsDetail';
 import '../App.css';
 
 class App extends Component {
@@ -14,23 +15,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <button onClick={this.createPost}>Create Post</button>
-        <Posts />
-        <Modal
-          overlayClassName='overlay'
-          isOpen={this.state.createPostModalOpen}
-          onRequestClose={this.closeCreatePostModal}
-          contentLabel='Modal'
-        >
-          <label>Title</label>
-          <input className='title-input' type='text' ref={(input) => this.input = input}/>
-          <label>Body</label>
-          <input className='body-input' type='text' ref={(input) => this.input = input}/>
-          <label>Author</label>
-          <input className='author-input' type='text' ref={(input) => this.input = input}/>
-          <button onClick={this.closeCreatePostModal}>Close modal</button>
-        </Modal>
+      <div>
+        <Route path="/" exact component={Posts} />
+        <Route path="/posts/:id" component={PostsDetail} />
       </div>
     );
   }
