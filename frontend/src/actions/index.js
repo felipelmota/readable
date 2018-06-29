@@ -6,10 +6,15 @@ export const FETCH_POSTS = 'fetch_posts';
 export const CREATE_POST = 'create_post';
 export const EDIT_POST = 'edit_post';
 export const DELETE_POST = 'delete_post';
-export const UPVOTE_POST = 'upvote_post';
-export const DOWNVOTE_POST = 'downvote_post';
+export const VOTE_POST = 'vote_post';
 
-const ROOT_URL = 'https://localhost:3001'
+export const FETCH_CATEGORIES = 'fetch_categories';
+export const FETCH_CATEGORY_POSTS = 'fetch_category_posts';
+
+export const FETCH_POST_COMMENTS = 'fetch_post_comments';
+export const VOTE_COMMENT = 'vote_comment';
+
+const ROOT_URL = 'http://localhost:5001'
 const AUTH_HEADERS = { 'Authorization': 'whatever-you-want', 'Accept': 'application/json', };
 
 axios.defaults.headers.common['Authorization'] = AUTH_HEADERS;
@@ -41,14 +46,16 @@ export function fetchPost(id) {
 }
 
 export function createPost(values, callback) {
+    const { title, body, author, category } = values;
+
     const data = {
         id: guid(),
         timestamp: Date.now(),
-        title: values.title,
-        body: values.body,
-        author: values.author,
+        title,
+        body,
+        author,
         deleted: false,
-        category: "react"
+        category
     }
         
     return dispatch => {
@@ -60,9 +67,6 @@ export function createPost(values, callback) {
 }
 
 export function editPost(id, values, callback) {
-    
-    console.log(id, values);
-
     return dispatch => {
         axios.put(`${ROOT_URL}/posts/${id}`, values).then(res => {
             console.log(res);
@@ -73,12 +77,18 @@ export function editPost(id, values, callback) {
 }
 
 export function deletePost(id, callback) {
-
     return dispatch => {
         axios.delete(`${ROOT_URL}/posts/${id}`).then(res => {
             callback();
             dispatch(deletePostSuccess(id));
         });        
+    }
+}
+
+export function voteForPost(id, vote) {
+    return dispatch => {
+        axios.post(`${ROOT_URL}/posts/${id}`, { option: vote })
+            .then(res => dispatch({ type: VOTE_POST, payload: res.data }))
     }
 }
 
@@ -114,5 +124,52 @@ function deletePostSuccess(data) {
     return {
         type: DELETE_POST,
         payload: data
+    }
+}
+
+/*
+Actions for categories
+*/
+
+export function fetchCategories() {
+        
+    return dispatch => {
+        axios.get(`${ROOT_URL}/categories`)
+            .then(res => dispatch(fetchCategoriesSuccess(res.data)));
+        
+    }
+}
+
+function fetchCategoriesSuccess(data) {
+    return {
+        type: FETCH_CATEGORIES,
+        payload: data
+    };
+}
+
+
+export function fetchCategoryPosts(category) {
+    return dispatch => {
+        axios.get(`${ROOT_URL}/${category}/posts`)
+            .then(res => dispatch({ type: FETCH_CATEGORY_POSTS, payload: res.data }));
+    }
+}
+
+/*
+Actions for comments
+*/
+
+export function fetchPostComments(postId) {
+    return dispatch => {
+        axios.get(`${ROOT_URL}/posts/${postId}/comments`)
+            .then(res => dispatch({ type: FETCH_POST_COMMENTS, payload: res.data }))
+    }
+}
+
+export function voteForComment(id, vote) {
+    return dispatch => {
+        axios.post(`${ROOT_URL}/comments/${id}`, { option: vote })
+            .then(res => dispatch({ type: VOTE_COMMENT, payload: res.data }))
+            .catch(err => console.log(err))
     }
 }

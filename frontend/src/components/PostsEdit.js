@@ -84,8 +84,8 @@ function validate(values) {
     return errors;
 }
 
-function mapStateToProps(state) {
-    return { post: state.posts.post }
+function mapStateToProps(state, ownProps) {
+    return { post: state.posts[ownProps.match.params.id] }
 }
 
 export default reduxForm({
