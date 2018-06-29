@@ -12,6 +12,8 @@ export const FETCH_CATEGORIES = 'fetch_categories';
 export const FETCH_CATEGORY_POSTS = 'fetch_category_posts';
 
 export const FETCH_POST_COMMENTS = 'fetch_post_comments';
+export const FETCH_COMMENT_POST = 'fetch_comment_post';
+export const DELETE_COMMENT_POST = 'delete_comment_post';
 export const VOTE_COMMENT = 'vote_comment';
 
 const ROOT_URL = 'http://localhost:5001'
@@ -163,6 +165,24 @@ export function fetchPostComments(postId) {
     return dispatch => {
         axios.get(`${ROOT_URL}/posts/${postId}/comments`)
             .then(res => dispatch({ type: FETCH_POST_COMMENTS, payload: res.data }))
+    }
+}
+
+export function fetchCommentPost(id) {
+    return dispatch => {
+        axios.get(`${ROOT_URL}/comments/${id}`)
+            .then(res => dispatch({ type: FETCH_COMMENT_POST, payload: res.data }));
+        
+    }
+}
+
+export function deleteCommentPost(id, callback) {
+     return dispatch => {
+        axios.delete(`${ROOT_URL}/comments/${id}`)
+            .then(res => {
+                callback();
+                dispatch({ type: DELETE_COMMENT_POST, payload: res.data });
+            });        
     }
 }
 
