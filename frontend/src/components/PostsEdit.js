@@ -46,21 +46,21 @@ class PostsEdit extends Component {
         const { editPost, match: { params: { id } }, history } = this.props;
         
         editPost(id, values, () => {
-            history.push('/');
+            history.push(`/posts/${id}`);
         });
     }
     
     render() {
-        const { handleSubmit } = this.props;
+        const { handleSubmit, post } = this.props;
         console.log('post', this.props.post)
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field label="Title" name="title" component={this.renderField} />
                 <Field label="Content" name="body" component={this.renderField} />
                 <ControlLabel>Author</ControlLabel>
-                <FormControl.Static>{this.props.post ? this.props.post.author : ''}</FormControl.Static>
+                <FormControl.Static>{post ? post.author : ''}</FormControl.Static>
                 <Button type="submit" bsStyle="primary">Update</Button>
-                <Link to="/" className="btn btn-danger">Cancel</Link>
+                <Link to={`/posts/${post.id}`} className="btn btn-danger">Cancel</Link>
             </form>
         );
     }

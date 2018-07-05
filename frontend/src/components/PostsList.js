@@ -26,25 +26,22 @@ class PostsList extends Component {
         }
         
         if (posts) {
-            return _.map(posts, (post, id) => {
+            return _.map(posts, post => {
                 return (
-                        <ListGroupItem
-                            header={post.title}
-                            key={id}
-                        >
-                            <div>{timestampToDate(post.timestamp)} by {post.author}</div> 
-                            <div>{post.body}</div>
-                            <div>{post.category} {post.voteScore}</div>
-                            <Link to={`posts/${post.id}`} key={post.id}>
-                                <Button>Read Post</Button>
-                            </Link>
-                            <Button onClick={() => voteForPost(id, 'upVote')}>
-                                upvote
-                            </Button>
-                            <Button onClick={() => voteForPost(id, 'downVote')}>
-                                downvote
-                            </Button>
-                        </ListGroupItem>
+                    <ListGroupItem header={post.title} key={post.id}>
+                        <div>{timestampToDate(post.timestamp)} by {post.author}</div> 
+                        <div>{post.body}</div>
+                        <div>{post.category} {post.voteScore}</div>
+                        <Link to={`posts/${post.id}`} key={post.id}>
+                            <Button>Read Post</Button>
+                        </Link>
+                        <Button onClick={() => voteForPost(post.id, 'upVote')}>
+                            upvote
+                        </Button>
+                        <Button onClick={() => voteForPost(post.id, 'downVote')}>
+                            downvote
+                        </Button>
+                    </ListGroupItem>
                 );
             });
         }

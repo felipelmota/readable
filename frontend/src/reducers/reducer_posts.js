@@ -18,7 +18,7 @@ export default function (state = INITIAL_STATE, action) {
         case FETCH_POST:
             return { ...state, [action.payload.id]: action.payload }
         case EDIT_POST:
-            return { ...state, post: action.payload }
+            return { ...state, [action.payload.id]: action.payload }
         case DELETE_POST: 
             return _.omit(state, action.payload);
         case VOTE_POST:
