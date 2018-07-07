@@ -10,13 +10,22 @@ class Posts extends Component {
         return (
             <Row>
                 <Col md={2}>
-                    Categories
+                    <h3>Categories</h3>
+
                     <CategoriesList />
                 </Col>
                 <Col md={10}>
-                    <Link to="posts/new">
-                        <Button bsStyle="success">Create Post</Button>
-                    </Link>
+                    <Row>
+                        <Col md={6} >
+                            <h3>Posts</h3>
+                        </Col>
+                        <Col md={6} className="text-right">
+                            <Link to="posts/new">
+                                <Button bsStyle="success">Create Post</Button>
+                            </Link>
+                        </Col>
+                    </Row>
+
                     <PostsList />
                 </Col>
             </Row>

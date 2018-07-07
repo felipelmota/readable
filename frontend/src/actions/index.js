@@ -1,4 +1,4 @@
-//In accordance with requirements
+import _ from 'lodash'
 import axios from 'axios';
 
 export const FETCH_POST = 'fetch_post';
@@ -13,6 +13,7 @@ export const FETCH_CATEGORY_POSTS = 'fetch_category_posts';
 
 export const FETCH_POST_COMMENTS = 'fetch_post_comments';
 export const FETCH_COMMENT_POST = 'fetch_comment_post';
+export const FETCH_POST_COMMENTS_COUNT = 'fetch_post_comments_count';
 export const CREATE_COMMENT_POST = 'create_comment_post';
 export const EDIT_COMMENT_POST = 'edit_comment_post';
 export const DELETE_COMMENT_POST = 'delete_comment_post';
@@ -72,7 +73,6 @@ export function createPost(values, callback) {
 export function editPost(id, values, callback) {
     return dispatch => {
         axios.put(`${ROOT_URL}/posts/${id}`, values).then(res => {
-            console.log(res);
             callback();
             dispatch(editPostSuccess(res.data))
         });
@@ -165,7 +165,22 @@ Actions for comments
 export function fetchPostComments(postId) {
     return dispatch => {
         axios.get(`${ROOT_URL}/posts/${postId}/comments`)
-            .then(res => dispatch({ type: FETCH_POST_COMMENTS, payload: res.data }))
+        .then(res => {
+            dispatch({ type: FETCH_POST_COMMENTS, payload: res.data })
+        })
+    }
+}
+
+export function fetchPostCommentsCount(postId, callback) {
+    return dispatch => {
+        axios.get(`${ROOT_URL}/posts/${postId}/comments`)
+            .then(res => {
+                const comments = _.filter(res.data, comment => !comment.deleted);
+                const count = Object.keys(comments).length;
+                const data = { postId, count }
+                callback(data);
+                dispatch({ type: FETCH_POST_COMMENTS_COUNT, payload: data });
+        });
     }
 }
 
@@ -173,13 +188,12 @@ export function fetchCommentPost(id) {
     return dispatch => {
         axios.get(`${ROOT_URL}/comments/${id}`)
             .then(res => dispatch({ type: FETCH_COMMENT_POST, payload: res.data }));
-        
     }
 }
 
 export function createPostComment(values, parentId, callback) {
-    const { body, author } = values;
     
+    const { body, author } = values;
     const data = {
         id: guid(),
         parentId,
@@ -194,7 +208,6 @@ export function createPostComment(values, parentId, callback) {
                 callback();
                 dispatch({ type: CREATE_COMMENT_POST, payload: res.data });
             });
-        
     }
 }
 
@@ -204,10 +217,8 @@ export function editPostComment(id, values, callback) {
         axios.put(`${ROOT_URL}/comments/${id}`, values)
             .then(res => {
                 callback();
-                console.log(id, values)
                 dispatch({ type: EDIT_COMMENT_POST, payload: res.data })
             });
-        
     }
 }
 
