@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { FormGroup, FormControl, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { createPost, fetchCategories } from '../actions';
-
+import { capitalize } from '../utils/helpers';
 
 class PostsNew extends Component {
 
@@ -29,6 +29,28 @@ class PostsNew extends Component {
         );
     }
     
+    renderCategoryFields(field) {
+        const { categories } = this.props;
+        const { meta: { touched, error } } = field;
+        const className = touched && error ? 'error': null;
+        return (
+            <FormGroup validationState={className}>
+                <label>{field.label}</label>
+                <select {...field.input} className="form-control">
+                    <option value="" className="disabled">-- Select content</option>
+                    {_.map(categories, category => (
+                        <option key={category.name} value={category.name}>
+                            {capitalize(category.name)}
+                        </option>
+                    ))}
+                </select>
+                <div className="text-help">
+                    {field.meta.touched ? field.meta.error : ''}
+                </div>
+            </FormGroup>
+        );
+    }
+    
     onSubmit(values) {
         this.props.createPost(values, () => {
             this.props.history.push('/');
@@ -36,26 +58,15 @@ class PostsNew extends Component {
     }
     
     render() {
-        const { handleSubmit, categories } = this.props;
+        const { handleSubmit, categories, form } = this.props;
         
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-              <Field label="Title" name="title" component={this.renderField} />
-              <Field label="Content" name="body" component={this.renderField} />
-              <Field label="Author" name="author" component={this.renderField} />
+              <Field label="Title:" name="title" component={this.renderField} />
+              <Field label="Content:" name="body" component={this.renderField} />
+              <Field label="Author:" name="author" component={this.renderField} />
               <label>Category</label>
-              <Field
-                name="category"
-                label="Category"
-                component="select"
-                >
-                <option></option>
-                {_.map(categories, category => (
-                    <option key={category.name} value={category.name} >
-                        {category.name}
-                    </option>
-                ))}
-              </Field>
+              <Field label="Category:" name="category" component={field => this.renderCategoryFields(field)} />
               <br />
               <Button type="submit" bsStyle="primary">Submit</Button>
               <Link to="/" className="btn btn-danger">Cancel</Link>
@@ -80,7 +91,7 @@ function validate(values) {
     }
 
     if (!values.category) {
-        errors.category = "Enter some content!"
+        errors.category = "Select some content!"
     }
     
     return errors;
