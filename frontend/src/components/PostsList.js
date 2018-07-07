@@ -24,10 +24,10 @@ class PostsList extends Component {
             return _.map(posts, post => {
                 return (
                     <li key={post.id} className="list-group-item">
-                        <Link to={`posts/${post.id}`} className="pull-right">
-                            <Button>Read Post</Button>
-                        </Link>
-                        <h2>{post.title}
+                        <h2>
+                            <Link to={`posts/${post.id}`} style={{ textDecoration: 'none' }}>
+                                {post.title}
+                            </Link>
                             <br/><small>Posted by {post.author}</small>
                         </h2>
                         <p>{post.body}</p>
@@ -49,21 +49,6 @@ class PostsList extends Component {
                             </Col>
                         </Row>
                     </li>
-
-                    // <ListGroupItem header={post.title} key={post.id}>
-                    //     <div>{timestampToDate(post.timestamp)} by {post.author}</div> 
-                    //     <div>{post.body}</div>
-                    //     <div>{post.category} {post.voteScore}</div>
-                    //     <Link to={`posts/${post.id}`} key={post.id}>
-                    //         <Button>Read Post</Button>
-                    //     </Link>
-                    //     <Button onClick={() => voteForPost(post.id, 'upVote')}>
-                    //         upvote
-                    //     </Button>
-                    //     <Button onClick={() => voteForPost(post.id, 'downVote')}>
-                    //         downvote
-                    //     </Button>
-                    // </ListGroupItem>
                 );
             });
         }
