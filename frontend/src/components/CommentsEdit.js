@@ -1,13 +1,7 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
-import {
-    FormGroup,
-    FormControl,
-    ControlLabel,
-    Button
-} from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { fetchCommentPost, editPostComment } from '../actions';
 

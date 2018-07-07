@@ -15,7 +15,7 @@ class Posts extends Component {
                 </Col>
                 <Col md={10}>
                     <Link to="posts/new">
-                        <Button>Create Post</Button>
+                        <Button bsStyle="success">Create Post</Button>
                     </Link>
                     <PostsList />
                 </Col>

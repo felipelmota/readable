@@ -1,12 +1,7 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
-import {
-    FormGroup,
-    FormControl,
-    Button
-} from 'react-bootstrap';
+import { FormGroup, FormControl, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { createPostComment } from '../actions';
 
@@ -19,10 +14,7 @@ class CommentsNew extends Component {
         return (
             <FormGroup validationState={className}>
                 <label>{field.label}</label>
-                <FormControl
-                    type="text"
-                    {...field.input}
-                />
+                <FormControl type="text" {...field.input} />
                 <div className="text-help">
                     {touched ? error : ''}
                 </div>

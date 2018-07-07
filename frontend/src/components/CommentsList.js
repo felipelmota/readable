@@ -2,15 +2,9 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { 
-    Button, ListGroup, ListGroupItem
-} from 'react-bootstrap';
-import {
-    fetchPostComments,
-    voteForComment
-} from '../actions';
+import { Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { fetchPostComments, voteForComment } from '../actions';
 import { timestampToDate } from '../utils/dateHelper';
-
 
 class CommentsList extends Component {
     
@@ -24,23 +18,20 @@ class CommentsList extends Component {
         if (comments) {
             return _.map(comments, (post, id) => {
                 return (
-                        <ListGroupItem
-                            header={post.title}
-                            key={id}
-                        >
-                            <div>{timestampToDate(post.timestamp)} by {post.author}</div> 
-                            <div>{post.body}</div>
-                            <div>{post.category} {post.voteScore}</div>
-                            <Link to={`/comments/${post.id}`} key={post.id}>
-                                <Button>Read Comment</Button>
-                            </Link>
-                            <Button onClick={() => voteForComment(post.id, 'upVote')}>
-                                upvote
-                            </Button>
-                            <Button onClick={() => voteForComment(post.id, 'downVote')}>
-                                downvote
-                            </Button>
-                        </ListGroupItem>
+                    <ListGroupItem header={post.title} key={id}>
+                        <div>{timestampToDate(post.timestamp)} by {post.author}</div> 
+                        <div>{post.body}</div>
+                        <div>{post.category} {post.voteScore}</div>
+                        <Link to={`/comments/${post.id}`} key={post.id}>
+                            <Button>Read Comment</Button>
+                        </Link>
+                        <Button onClick={() => voteForComment(post.id, 'upVote')}>
+                            upvote
+                        </Button>
+                        <Button onClick={() => voteForComment(post.id, 'downVote')}>
+                            downvote
+                        </Button>
+                    </ListGroupItem>
                 );
             });
         }
@@ -49,7 +40,7 @@ class CommentsList extends Component {
     
     render() {
         return (
-            <div>{this.renderCommentsList()}</div>
+            <ListGroup>{this.renderCommentsList()}</ListGroup>
         );
     }
 }
