@@ -4,13 +4,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ListGroup } from 'react-bootstrap';
-import { fetchPosts, voteForPost, deletePost, fetchPostComments } from '../actions';
+import { fetchPosts, voteForPost, deletePost, fetchPostComments, fetchCategoryPosts } from '../actions';
 import PostsListDetail from './PostsListDetail';
 
 class PostsList extends Component {
     
     componentWillMount() {
-        this.props.fetchPosts();
+        if(this.props.match.params.category) {
+            const {
+                fetchCategoryPosts,
+                match: { params: { category } } } = this.props;
+            fetchCategoryPosts(category.toLowerCase());
+        } else {
+            this.props.fetchPosts();
+        }
+
     }
     
     deleteButtonPress(id) {
@@ -46,5 +54,5 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps, {
-    fetchPosts, voteForPost, deletePost, fetchPostComments
+    fetchPosts, voteForPost, deletePost, fetchPostComments, fetchCategoryPosts
 })(PostsList);

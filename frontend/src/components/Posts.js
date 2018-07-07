@@ -11,7 +11,6 @@ class Posts extends Component {
             <Row>
                 <Col md={2}>
                     <h3>Categories</h3>
-
                     <CategoriesList />
                 </Col>
                 <Col md={10}>
@@ -25,8 +24,7 @@ class Posts extends Component {
                             </Link>
                         </Col>
                     </Row>
-
-                    <PostsList />
+                    <PostsList {...this.props} />
                 </Col>
             </Row>
         );
