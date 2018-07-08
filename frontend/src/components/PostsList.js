@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ListGroup } from 'react-bootstrap';
-import { fetchPosts, voteForPost, deletePost, fetchPostComments, fetchCategoryPosts } from '../actions';
+import { fetchPosts, voteForPost, deletePost, fetchPostComments, fetchCategoryPosts, postSortOrder } from '../actions';
 import PostsListDetail from './PostsListDetail';
 
 class PostsList extends Component {
@@ -32,27 +32,44 @@ class PostsList extends Component {
         }
         
         if (posts) {
-            return _.map(posts, post => <PostsListDetail key={post.id} post={post} />);
+            const orderedPosts = _.sortBy(posts, this.props.postsOrder).reverse()
+            return _.map(orderedPosts, post => <PostsListDetail key={post.id} post={post} />);
         }
 
         return <div>Loading...</div>
     }
     
     render() {
-        console.log(this.props.posts)
+        const { postSortOrder } = this.props;
+
         return (
-            <ListGroup componentClass="ul">
-                {this.renderPosts()}
-            </ListGroup>
+            <div>
+                <div className="form-inline text-right">
+                    <label htmlFor="sel1">SortBy:</label>
+                    <select onChange={event => postSortOrder(event.target.value)}className="form-control" id="sel1">
+                        <option value='voteScore'>Votes</option>
+                        <option value='timestamp'>Date</option>
+                    </select>
+                </div>
+                <ListGroup componentClass="ul">
+                    {this.renderPosts()}
+                </ListGroup>
+            </div>
         );
     }
 }
 
 function mapStateToProps (state) {
     const posts = _.filter(state.posts, post => !post.deleted);
-    return { posts }
+    const { postsOrder } = state;
+    return { posts, postsOrder }
 }
 
 export default connect(mapStateToProps, {
-    fetchPosts, voteForPost, deletePost, fetchPostComments, fetchCategoryPosts
+    fetchPosts,
+    voteForPost,
+    deletePost,
+    fetchPostComments,
+    fetchCategoryPosts,
+    postSortOrder
 })(PostsList);

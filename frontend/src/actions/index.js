@@ -7,6 +7,7 @@ export const CREATE_POST = 'create_post';
 export const EDIT_POST = 'edit_post';
 export const DELETE_POST = 'delete_post';
 export const VOTE_POST = 'vote_post';
+export const POST_SORT_ORDER = 'post_sort_order';
 
 export const FETCH_CATEGORIES = 'fetch_categories';
 export const FETCH_CATEGORY_POSTS = 'fetch_category_posts';
@@ -100,6 +101,13 @@ function fetchPostsSuccess(data) {
         type: FETCH_POSTS,
         payload: data
     };
+}
+
+export function postSortOrder(sortType) {
+    return {
+        type: POST_SORT_ORDER,
+        payload: sortType
+    }
 }
 
 function fetchPostSuccess(data) {
