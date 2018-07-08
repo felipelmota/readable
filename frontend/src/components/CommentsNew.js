@@ -23,28 +23,30 @@ class CommentsNew extends Component {
     }
     
     onSubmit(values) {
-        const postId = this.props.match.params.id
-        this.props.createPostComment(values, postId, () => {
-            this.props.history.push(`/posts/${postId}`);
+        const { category, id } = this.props.match.params
+        this.props.createPostComment(values, id, () => {
+            this.props.history.push(`/${category}/${id}`);
         });
     }
     
     render() {
-        const { handleSubmit, match } = this.props;
+        const {
+            handleSubmit,
+            match: {
+                params: {
+                    category,
+                    id
+                }
+            }
+        } = this.props;
+
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-              <Field
-                label="Comment"
-                name="body"
-                component={this.renderField}
-              />
-              <Field
-                label="Author"
-                name="author"
-                component={this.renderField}
-              />
+              <Field label="Comment" name="body" component={this.renderField} />
+              <Field label="Author" name="author" component={this.renderField} />
               <Button type="submit" bsStyle="primary">Submit</Button>
-              <Link to={`/posts/${match.params.id}`} className="btn btn-danger">Cancel</Link>
+
+              <Link to={`/${category}/${id}`} className="btn btn-danger">Cancel</Link>
             </form>
         );
     }
@@ -67,8 +69,4 @@ function validate(values) {
 export default reduxForm({
     validate,
     form: 'AddCommentForm'
-})(
-    connect(null, {
-        createPostComment
-    })(CommentsNew)
-);
+})(connect(null, { createPostComment })(CommentsNew));

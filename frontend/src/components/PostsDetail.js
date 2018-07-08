@@ -32,14 +32,20 @@ class PostsDetail extends Component {
     }
     
     render() {
-        const { post, voteForPost } = this.props;
-        if (!post) {
-            return <div>Loading...</div>;
-        }
+        const {
+            post,
+            voteForPost,
+            match: {
+                params: {
+                    category
+                }
+            }
+        } = this.props;
+        
         return (
             <div>
                 <Link to="/"><Button>Back</Button></Link>
-                <Link to={`/posts/edit/${post.id}`}>
+                <Link to={`/${category}/edit/${post.id}`}>
                     <Button bsStyle="warning">
                         Edit Post
                     </Button>
@@ -69,12 +75,11 @@ class PostsDetail extends Component {
                 </Row>
                 <Row>
                     <Col md={12} className="text-right">
-                      <Link to={`/posts/${post.id}/comments/new`}>
+                      <Link to={`/${post.category}/${post.id}/comments/new`}>
                             <Button bsStyle="primary">Add comment</Button>
                         </Link>  
                     </Col>
                 </Row>
-
                 <CommentsList postId={post.id} />
             </div>    
         );

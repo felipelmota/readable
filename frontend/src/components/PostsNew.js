@@ -64,7 +64,6 @@ class PostsNew extends Component {
               <Field label="Title:" name="title" component={this.renderField} />
               <Field label="Content:" name="body" component={this.renderField} />
               <Field label="Author:" name="author" component={this.renderField} />
-              <label>Category</label>
               <Field label="Category:" name="category" component={field => this.renderCategoryFields(field)} />
               <Button type="submit" bsStyle="primary">Submit</Button>
               <Link to="/" className="btn btn-danger">Cancel</Link>

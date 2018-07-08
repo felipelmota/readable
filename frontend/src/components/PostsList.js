@@ -2,7 +2,6 @@ import _ from 'lodash';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { ListGroup } from 'react-bootstrap';
 import { fetchPosts, voteForPost, deletePost, fetchPostComments, fetchCategoryPosts, postSortOrder } from '../actions';
 import PostsListDetail from './PostsListDetail';

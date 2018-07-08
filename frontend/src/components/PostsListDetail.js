@@ -29,14 +29,14 @@ class PostsListDetail extends Component {
                     <Button  bsStyle="danger" onClick={() => this.deleteButtonPress(post.id)}>
                         Delete Post
                     </Button>
-                    <Link to={`/posts/edit/${post.id}`}>
+                    <Link to={`/${post.category}/edit/${post.id}`}>
                         <Button bsStyle="warning" >
                             Edit Post
                         </Button>
                     </Link>
                 </ButtonGroup>
                 <h2>
-                    <Link to={`posts/${post.id}`} style={{ textDecoration: 'none' }} >
+                    <Link to={`${post.category}/${post.id}`} style={{ textDecoration: 'none' }} >
                         {post.title}
                     </Link>
                     <br/><small>Posted by {post.author}</small>
@@ -65,7 +65,7 @@ class PostsListDetail extends Component {
     }
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps (state) {
     const { commentCount } = state.comments;
     return { commentCount };
 }
