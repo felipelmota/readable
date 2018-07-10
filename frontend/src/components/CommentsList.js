@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { fetchPostComments, voteForComment, deleteCommentPost, fetchPostCommentsCount } from '../actions';
 import { timestampToDate } from '../utils/dateHelper';
+import NotFound from './NotFound';
 
 class CommentsList extends Component {
     
@@ -52,7 +53,7 @@ class CommentsList extends Component {
                 );
             });
         }
-        return <div>Loading...</div>
+        return <NotFound />
     }
     
     render() {

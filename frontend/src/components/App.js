@@ -8,6 +8,7 @@ import PostsEdit from './PostsEdit';
 import NavbarHeader from './NavbarHeader';
 import CommentsNew from './CommentsNew';
 import CommentsEdit from './CommentsEdit';
+import NotFound from './NotFound';
 
 const App = React.createClass({
     render() {
@@ -24,6 +25,7 @@ const App = React.createClass({
                         <Route path="/:category/:id" exact component={PostsDetail} />
                         <Route path="/:category/:id/comments/new" component={CommentsNew} />
                         <Route path="/:category/:postId/comments/edit/:id" component={props => <CommentsEdit {...props}/>} />
+                        <Route path="*" component={NotFound} />
                     </Switch>
                 </Grid>
             </div>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button, Row, Col, Label, Glyphicon } from 'react-bootstrap';
 import { fetchPost, deletePost, voteForPost, fetchPostCommentsCount } from '../actions';
 import CommentsList from './CommentsList';
+import NotFound from './NotFound';
 
 import { timestampToDate } from '../utils/dateHelper';
 
@@ -41,48 +42,53 @@ class PostsDetail extends Component {
                 }
             }
         } = this.props;
+        const commentCount = this.state.commentCount;
         
-        return (
-            <div>
-                <Link to="/"><Button>Back</Button></Link>
-                <Link to={`/${category}/edit/${post.id}`}>
-                    <Button bsStyle="warning">
-                        Edit Post
+        if (!post || post.category !== category) {
+            return (<NotFound />);
+        } else {
+            return (
+                <div>
+                    <Link to="/"><Button>Back</Button></Link>
+                    <Link to={`/${category}/edit/${post.id}`}>
+                        <Button bsStyle="warning">
+                            Edit Post
+                        </Button>
+                    </Link>
+                    <Button bsStyle="danger" onClick={this.deleteButtonPress.bind(this)}>
+                        Delete Post
                     </Button>
-                </Link>
-                <Button bsStyle="danger" onClick={this.deleteButtonPress.bind(this)}>
-                    Delete Post
-                </Button>
-                <Row>
-                    <Col md={12}>
-                        <Col md={8} className="text-left">
-                            <h2>{post.title}<br/><small>Posted by {post.author}</small></h2>
-                            <div className="badge">{timestampToDate(post.timestamp)}</div>
-                            <h4><Label bsStyle="primary">{post.category}</Label></h4>
-                            <p>{post.body}</p>
-                            {this.state.commentCount ? this.state.commentCount : 0 } comments
+                    <Row>
+                        <Col md={12}>
+                            <Col md={8} className="text-left">
+                                <h2>{post.title}<br/><small>Posted by {post.author}</small></h2>
+                                <div className="badge">{timestampToDate(post.timestamp)}</div>
+                                <h4><Label bsStyle="primary">{post.category}</Label></h4>
+                                <p>{post.body}</p>
+                                { commentCount ? commentCount : 0 } comments
+                            </Col>
+                            <Col md={4} className="text-right">
+                                <h3><Label bsStyle={post.voteScore < 0 ? "danger": "success"}>{post.voteScore}</Label></h3>
+                                <Button onClick={() => voteForPost(post.id, 'upVote')}>
+                                    <Glyphicon glyph="thumbs-up" />
+                                </Button>
+                                <Button onClick={() => voteForPost(post.id, 'downVote')}>
+                                    <Glyphicon glyph="thumbs-down" />
+                                </Button>
+                            </Col>
                         </Col>
-                        <Col md={4} className="text-right">
-                            <h3><Label bsStyle={post.voteScore < 0 ? "danger": "success"}>{post.voteScore}</Label></h3>
-                            <Button onClick={() => voteForPost(post.id, 'upVote')}>
-                                <Glyphicon glyph="thumbs-up" />
-                            </Button>
-                            <Button onClick={() => voteForPost(post.id, 'downVote')}>
-                                <Glyphicon glyph="thumbs-down" />
-                            </Button>
+                    </Row>
+                    <Row>
+                        <Col md={12} className="text-right">
+                        <Link to={`/${post.category}/${post.id}/comments/new`}>
+                                <Button bsStyle="primary">Add comment</Button>
+                            </Link>  
                         </Col>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md={12} className="text-right">
-                      <Link to={`/${post.category}/${post.id}/comments/new`}>
-                            <Button bsStyle="primary">Add comment</Button>
-                        </Link>  
-                    </Col>
-                </Row>
-                <CommentsList postId={post.id} />
-            </div>    
-        );
+                    </Row>
+                    <CommentsList postId={post.id} />
+                </div>    
+            );
+        }
     }
 }
 

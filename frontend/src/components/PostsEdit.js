@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FormGroup, FormControl, Button, ControlLabel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { editPost, fetchPost } from '../actions';
+import NotFound from './NotFound';
 
 class PostsEdit extends Component {
     componentWillMount() {
@@ -50,21 +51,29 @@ class PostsEdit extends Component {
     }
     
     render() {
-        const { handleSubmit, post } = this.props;
-        console.log('post', this.props.post)
-        return (
-            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                <Field label="Title:" name="title" component={this.renderField} />
-                <Field label="Content:" name="body" component={this.renderField} />
-                <FormGroup>
-                    <ControlLabel>Author</ControlLabel>
-                    <FormControl.Static>{post ? post.author : ''}</FormControl.Static>
-                </FormGroup>
-                <Button type="submit" bsStyle="primary">Update</Button>
-                
-                <Link to={'/'} className="btn btn-danger">Cancel</Link>
-            </form>
-        );
+        const {
+            handleSubmit,
+            post,
+            match: { params: { category } },
+        } = this.props;
+        
+        if (!post || post.category !== category) {
+            return (<NotFound />);
+        } else {
+            return (
+                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    <Field label="Title:" name="title" component={this.renderField} />
+                    <Field label="Content:" name="body" component={this.renderField} />
+                    <FormGroup>
+                        <ControlLabel>Author</ControlLabel>
+                        <FormControl.Static>{post ? post.author : ''}</FormControl.Static>
+                    </FormGroup>
+                    <Button type="submit" bsStyle="primary">Update</Button>
+                    
+                    <Link to={'/'} className="btn btn-danger">Cancel</Link>
+                </form>
+            );
+        }
     }
 }
 
