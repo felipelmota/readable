@@ -1,6 +1,4 @@
-import  {
-    POST_SORT_ORDER
-} from '../actions';
+import  { POST_SORT_ORDER } from '../actions/Types';
 
 const INITIAL_STATE = 'voteScore';
 

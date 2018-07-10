@@ -1,6 +1,4 @@
-import {
-    FETCH_CATEGORIES
-} from '../actions';
+import { FETCH_CATEGORIES } from '../actions/Types';
 
 const INITIAL_STATE = {};
 

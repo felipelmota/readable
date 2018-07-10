@@ -6,7 +6,7 @@ import  {
     EDIT_COMMENT_POST,
     DELETE_COMMENT_POST,
     VOTE_COMMENT
-} from '../actions';
+} from '../actions/Types';
 
 const INITIAL_STATE = {
     commentCount: {}
