@@ -85,7 +85,10 @@ class PostsDetail extends Component {
                             </Link>  
                         </Col>
                     </Row>
-                    <CommentsList postId={post.id} />
+                    {(commentCount) ?
+                        <CommentsList postCategory={post.category} postId={post.id} /> :
+                        <br />
+                    }
                 </div>    
             );
         }

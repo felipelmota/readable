@@ -53,7 +53,6 @@ class CommentsList extends Component {
                 );
             });
         }
-        return <NotFound />
     }
     
     render() {
