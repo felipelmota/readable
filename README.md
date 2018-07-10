@@ -49,3 +49,10 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
+
+# API Server
+
+To install and start the API server, run the following commands in this directory:
+
+* `npm install`
+* `node server`
